@@ -74,20 +74,21 @@ function plotFiveBox(options){
          * @param {Number} vw largura do retangulo na escala horizontal
          * @param {Number} vh altura do retangulo na escala horizontal
          */
-        rectByValue: function (vx, vy, vw, vh, fill, stroke, strokeWidth){
+        drawBox: function (box){
+
             var rangePoint = this.pixelPointByVal(rangeX, rangeY);
             
-            var p = this.pixelPointByVal(vx, vy);
-            var s = this.pixelPointByVal(vw, vh);
+            var p = this.pixelPointByVal(box.x, box.y);
+            var s = this.pixelPointByVal(box.w, box.h);
 
             var rect = new Konva.Rect({
                     x: this.mainRect.x() + p.x, 
                     y:  this.mainRect.y() + ((rangePoint.y - s.y)),
                     width: s.x - p.x, 
                     height: (s.y - p.y), 
-                    fill: (fill ? fill : 'grey'), 
-                    stroke: (stroke ? stroke : null), 
-                    strokeWidth: (strokeWidth ? strokeWidth : null)
+                    fill: (box.fill ? box.fill : 'grey'), 
+                    stroke: (box.stroke ? box.stroke : null), 
+                    strokeWidth: (box.strokeWidth ? box.strokeWidth : null)
             });
 
             this.mainLayer.add(rect);
@@ -113,9 +114,10 @@ function plotFiveBox(options){
 
         },
         updateBoxes: function(){
+            
             for(var b = 0; b < options.boxes.length; b++){
                 var box = options.boxes[b];
-                var rect = this.rectByValue(box.x, box.y, box.w, box.h, box.fill);
+                var rect = this.drawBox(box);
                 
                 rect.data = box;
                 

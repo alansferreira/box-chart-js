@@ -53,11 +53,28 @@
                 if(_lastMouseBox==box) return;
                 _lastMouseBox=box;
 
+
+                
                 for (var p = 0; p < plot.options.data.length; p++) {
                     var data = plot.options.data[p];
                     data.h = 1;
                     data.w = 1;
-                    
+
+                    switch (box.title) {
+                        case 'B':
+                            var boxA = plot.options.boxes[4];
+                            if(isCollision(data, box) && !isCollision(data, boxA)){
+                                data.fill = 'pink';
+                            }else{
+                                data.fill = 'black'
+                            }
+                            
+                            continue;
+                            break;
+                        default:
+                            break;
+                    }
+
                     if(isCollision(data, box)){
                         data.fill = 'pink';
                     }else{
