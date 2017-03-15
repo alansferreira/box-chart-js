@@ -9,7 +9,7 @@
         <script src="bower/javascript-detect-element-resize/jquery.resize.js"></script>
         <script src="bower/konva/konva.min.js"></script>
 
-        <script type="text/javascript" src="five-box-chart-v2.js"></script>
+        <script type="text/javascript" src="five-box-chart.js"></script>
         <script type="text/javascript" canvas="myCanvas">
             var options = {
                 container: '#myCanvas', 
@@ -46,8 +46,25 @@
                 }
             };
 
+            function randomData(){
+                var data = [];
+                var length = Math.floor(Math.random() * 2000);
+                for(var i = 0; i < length; i++){
+                    data.push({ 
+                        x: Math.floor(Math.random() * 1000)/1000, 
+                        y: Math.floor(Math.random() * 140), 
+                        radius: 2, fill: 'black'
+                    });
+                }
+                return data;
+            }
+
+            options.data = randomData();
             var plot = plotFiveBox(options);
-        
+            setInterval(function(){
+                plot.options.data = randomData();
+                plot.update();
+            }, 2000);
         </script>
     </body>
 </html>
