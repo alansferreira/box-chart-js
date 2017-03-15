@@ -51,16 +51,17 @@ function plotFiveBox(options){
             this.mainLayer.add(line);
             return line;
         }, 
-        addPoint: function (x, y, radius, fill, stroke, strokeWidth){
-            var p = this.pixelPointByVal(x, y);
+        addPoint: function (data){
+            var p = this.pixelPointByVal(data.x, data.y);
+            var rangePoint = this.pixelPointByVal(rangeX, rangeY);
 
             var point = new Konva.Circle({
-                x: p.x + this.mainRect.x(),
-                y: p.y + this.mainRect.y(),
-                radius: radius ? radius : 2,
-                fill: fill ? fill : 'black',
-                stroke: stroke ? stroke : 'red', 
-                strokeWidth: strokeWidth ? strokeWidth : 1, 
+                x: this.mainRect.x() + p.x, 
+                y:  this.mainRect.y() + ((rangePoint.y - p.y)),
+                radius: data.radius ? data.radius : 2,
+                fill: data.fill ? data.fill : 'black',
+                stroke: data.stroke ? data.stroke : 'red', 
+                strokeWidth: data.strokeWidth ? data.strokeWidth : 1, 
             });
             
             this.mainLayer.add(point);
@@ -111,13 +112,19 @@ function plotFiveBox(options){
             this.stage.add(this.mainLayer);
 
         },
-        update: function(){
-            this.clear();
-
+        updateBoxes: function(){
             for(var b = 0; b < options.boxes.length; b++){
                 var box = options.boxes[b];
                 var rect = this.rectByValue(box.x, box.y, box.w, box.h, box.fill);
                 
+                rect.data = box;
+                
+                if(box.events){
+                    for(var evt in box.events){
+                        rect.on(evt, box.events[evt]);
+                    }
+                }
+
                 var title = new Konva.Text({
                     text: box.title,
                     fontSize: 30,
@@ -129,6 +136,13 @@ function plotFiveBox(options){
                 title.y(rect.y()+((rect.height()/2)-(title.textHeight/2)));
                 this.mainLayer.add(title);
             }
+
+        },
+        update: function(){
+            this.clear();
+
+            this.updateBoxes();
+
 
             // draw grid
             for(var x = options.xAxis.rule.start; x < options.xAxis.rule.end; x+=options.xAxis.rule.step){
@@ -142,12 +156,18 @@ function plotFiveBox(options){
             for(var d = 0; d < options.data.length; d++){
                 var dataItem = options.data[d];
                 
-                this.addPoint(dataItem.x, dataItem.y, dataItem.radius);
+                var point = this.addPoint(dataItem);
+                point.data = dataItem;
+                dataItem.point = point;
+
             }
 
             this.stage.add(this.mainLayer);
 
             this.stage.draw();
+        }, 
+
+        addBoxEvent: function(event, callback){
 
         }
     }

@@ -33,11 +33,11 @@
                     {id: 0, x: 1, y: 1, title: null}
                 ],
                 boxes: [
-                    {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', title: 'E'}, 
-                    {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', title: 'D'}, 
-                    {x: 0, y: 90, w: 0.6, h: 140, fill: '#F2F2F2', title: 'C'}, 
-                    {x: 0.6, y: 90, w: 1, h: 140, fill: '#7F7FFF', title: 'B'}, 
-                    {x: 0.9, y: 130, w: 1, h: 140, fill: '#7FBF7F', title: 'A'}, 
+                    {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', title: 'E', events:{mouseenter: showInside}}, 
+                    {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', title: 'D', events:{mouseenter: showInside}}, 
+                    {x: 0, y: 90, w: 0.6, h: 140, fill: '#F2F2F2', title: 'C', events:{mouseenter: showInside}}, 
+                    {x: 0.6, y: 90, w: 1, h: 140, fill: '#7F7FFF', title: 'B', events:{mouseenter: showInside}}, 
+                    {x: 0.9, y: 130, w: 1, h: 140, fill: '#7FBF7F', title: 'A', events:{mouseenter: showInside}}, 
                     //{x: 0, y: 0, w: 0.4, h: 60, fill: 'grey'}, 
                     //{x: 0.5, y: 0, w: 0.9, h: 60, fill: 'blue'}, 
                 ], 
@@ -45,7 +45,29 @@
                     stroke:{x: '#C1C2C3', y: '#C1C2C3'}
                 }
             };
+            var _lastMouseBox = null;
+            function showInside(evt){
 
+                //alert(evt.currentTarget.data.title);
+                var box = evt.currentTarget.data;
+                if(_lastMouseBox==box) return;
+                _lastMouseBox=box;
+
+                for (var p = 0; p < plot.options.data.length; p++) {
+                    var data = plot.options.data[p];
+                    data.h = 1;
+                    data.w = 1;
+                    
+                    if(isCollision(data, box)){
+                        data.fill = 'pink';
+                    }else{
+                        data.fill = 'black'
+                    }
+                    
+                }
+                console.log('update');
+                plot.update();
+            }
             function randomData(){
                 var data = [];
                 var length = Math.floor(Math.random() * 2000);
@@ -61,10 +83,17 @@
 
             options.data = randomData();
             var plot = plotFiveBox(options);
-            setInterval(function(){
-                plot.options.data = randomData();
-                plot.update();
-            }, 2000);
+
+            function isCollision(rect1, rect2){
+                if (rect1.x > rect2.x && rect1.x < rect2.x + rect2.w &&
+                    rect1.y > rect2.y && rect1.y < rect2.y + rect2.h) {
+                    return true;
+                }
+                return false;
+            }
+
+
+
         </script>
     </body>
 </html>
