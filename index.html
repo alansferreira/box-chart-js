@@ -1,0 +1,53 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="myCanvas" style="width: 100%; height: 100%">
+        </div>
+
+        <script src="bower/jquery/dist/jquery.min.js"></script>
+        <script src="bower/javascript-detect-element-resize/jquery.resize.js"></script>
+        <script src="bower/konva/konva.min.js"></script>
+
+        <script type="text/javascript" src="five-box-chart-v2.js"></script>
+        <script type="text/javascript" canvas="myCanvas">
+            var options = {
+                container: '#myCanvas', 
+                xAxis: {
+                    title: 'title X axis here',
+                    rule:{
+                        start: 0.0, 
+                        end: 1.0,
+                        step: 0.1
+                    }
+                }, 
+                yAxis: {
+                    title: 'title Y axis here',
+                    rule:{
+                        start: 0, 
+                        end: 140,
+                        step: 10
+                    }
+                }, 
+                data: [
+                    {id: 0, x: 1, y: 1, title: null}
+                ],
+                boxes: [
+                    {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', title: 'E'}, 
+                    {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', title: 'D'}, 
+                    {x: 0, y: 90, w: 0.6, h: 140, fill: '#F2F2F2', title: 'C'}, 
+                    {x: 0.6, y: 90, w: 1, h: 140, fill: '#7F7FFF', title: 'B'}, 
+                    {x: 0.9, y: 130, w: 1, h: 140, fill: '#7FBF7F', title: 'A'}, 
+                    //{x: 0, y: 0, w: 0.4, h: 60, fill: 'grey'}, 
+                    //{x: 0.5, y: 0, w: 0.9, h: 60, fill: 'blue'}, 
+                ], 
+                grid: {
+                    stroke:{x: '#C1C2C3', y: '#C1C2C3'}
+                }
+            };
+
+            var plot = plotFiveBox(options);
+        
+        </script>
+    </body>
+</html>
