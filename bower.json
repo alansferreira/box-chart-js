@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "3.1.1",
     "konva": "latest", 
-    "javascript-detect-element-resize": "latest"
+    "javascript-detect-element-resize": "latest", 
+    "overlap-js": "latest"
   }
 }

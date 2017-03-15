@@ -75,25 +75,49 @@ function plotFiveBox(options){
          * @param {Number} vh altura do retangulo na escala horizontal
          */
         drawBox: function (box){
+            var overlaps = getOverlaps(box, this.options.boxes);
 
             var rangePoint = this.pixelPointByVal(rangeX, rangeY);
             
             var p = this.pixelPointByVal(box.x, box.y);
             var s = this.pixelPointByVal(box.w, box.h);
-
-            var rect = new Konva.Rect({
+            
+            var rect = {
                     x: this.mainRect.x() + p.x, 
                     y:  this.mainRect.y() + ((rangePoint.y - s.y)),
                     width: s.x - p.x, 
-                    height: (s.y - p.y), 
-                    fill: (box.fill ? box.fill : 'grey'), 
-                    stroke: (box.stroke ? box.stroke : null), 
-                    strokeWidth: (box.strokeWidth ? box.strokeWidth : null)
-            });
+                    height: (s.y - p.y)
+            };
 
-            this.mainLayer.add(rect);
+            var boxRect = new Konva.Rect({x: 0, y: 0, width: rect.width, height: rect.height});
+            
+            boxRect.data = box;
+            boxRect.fill(box.fill ? box.fill : 'grey');
+            boxRect.stroke(box.stroke ? box.stroke : null);
+            boxRect.strokeWidth(box.strokeWidth ? box.strokeWidth : null);
+            
+            var group = new Konva.Group(rect);
+            
+            if(overlaps.length>0){
+                group.clipFunc = function(ctx) {
+                    for (var ov = 0; ov < overlaps.length; ov++) {
+                        var overlap = overlaps[ov].overlapedArea;
+                        ctx.rect({
+                            x: overlap.x,
+                            y: overlap.y,
+                            width: overlap.w,
+                            height: overlap.h
+                        });
+                    }
+                };
+                
+            }
+            group.add(boxRect);
+            this.mainLayer.add(group);
+            
 
-            return rect;
+
+            return group;
         },
         clear: function(){
             
@@ -148,15 +172,36 @@ function plotFiveBox(options){
 
             // draw grid
             for(var x = options.xAxis.rule.start; x < options.xAxis.rule.end; x+=options.xAxis.rule.step){
-                this.addLine(x, 0, x, options.yAxis.rule.end, options.grid.stroke.x);
+                var line = this.addLine(x, 0, x, options.yAxis.rule.end, options.grid.stroke.x);
+                
+                var ruleXText = new Konva.Text({
+                    text: Math.round(x * 100) / 100,
+                    y: this.mainRect.y() + this.mainRect.height(),
+                    fontSize: 12,
+                    fontFamily: 'Calibri',
+                    fill: 'black'
+                });
+                ruleXText.x(line.attrs.points[0] - (ruleXText.width()/2));
+                this.mainLayer.add(ruleXText);
             }
 
             for(var y = options.yAxis.rule.start; y < options.yAxis.rule.end + options.yAxis.rule.step; y+=options.yAxis.rule.step){
-                this.addLine(0, y, options.xAxis.rule.end, y, options.grid.stroke.y);
+                var line = this.addLine(0, y, options.xAxis.rule.end, y, options.grid.stroke.y);
+
+                var ruleYText = new Konva.Text({
+                    text: (options.yAxis.rule.end - options.yAxis.rule.start) - y,
+                    fontSize: 12,
+                    fontFamily: 'Calibri',
+                    fill: 'black'
+                });
+                ruleYText.x(this.mainRect.x() - (ruleYText.width() + 5));
+                ruleYText.y(line.attrs.points[1] - (ruleYText.height()/2));
+                this.mainLayer.add(ruleYText);
             }
 
             for(var d = 0; d < options.data.length; d++){
                 var dataItem = options.data[d];
+                dataItem.point = null;
                 
                 var point = this.addPoint(dataItem);
                 point.data = dataItem;

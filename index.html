@@ -8,6 +8,7 @@
         <script src="bower/jquery/dist/jquery.min.js"></script>
         <script src="bower/javascript-detect-element-resize/jquery.resize.js"></script>
         <script src="bower/konva/konva.min.js"></script>
+        <script src="bower/overlap-js/overlap.js"></script>
 
         <script type="text/javascript" src="five-box-chart.js"></script>
         <script type="text/javascript" canvas="myCanvas">
@@ -49,41 +50,30 @@
             function showInside(evt){
 
                 //alert(evt.currentTarget.data.title);
-                var box = evt.currentTarget.data;
-                if(_lastMouseBox==box) return;
-                _lastMouseBox=box;
+                var boxData = evt.currentTarget.data;
+                if(_lastMouseBox==boxData) return;
+                _lastMouseBox=boxData;
 
 
                 
                 for (var p = 0; p < plot.options.data.length; p++) {
                     var data = plot.options.data[p];
+                    var point = data.point;
                     data.h = 1;
                     data.w = 1;
 
-                    switch (box.title) {
-                        case 'B':
-                            var boxA = plot.options.boxes[4];
-                            if(isCollision(data, box) && !isCollision(data, boxA)){
-                                data.fill = 'pink';
-                            }else{
-                                data.fill = 'black'
-                            }
-                            
-                            continue;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if(isCollision(data, box)){
-                        data.fill = 'pink';
+                    var selected = false;
+                    if(boxData.title=='B'){
+                        var boxA = plot.options.boxes[4];
+                        selected = isCollision(data, boxData) && !isCollision(data, boxA);
                     }else{
-                        data.fill = 'black'
+                        selected = isCollision(data, boxData);
                     }
+                    point.fill((selected?'pink': data.fill));
                     
                 }
-                console.log('update');
-                plot.update();
+                //console.log('update');
+                plot.stage.draw();
             }
             function randomData(){
                 var data = [];
@@ -102,8 +92,8 @@
             var plot = plotFiveBox(options);
 
             function isCollision(rect1, rect2){
-                if (rect1.x > rect2.x && rect1.x < rect2.x + rect2.w &&
-                    rect1.y > rect2.y && rect1.y < rect2.y + rect2.h) {
+                if (rect1.x >= rect2.x && rect1.x <= rect2.x + rect2.w &&
+                    rect1.y >= rect2.y && rect1.y <= rect2.y + rect2.h) {
                     return true;
                 }
                 return false;
