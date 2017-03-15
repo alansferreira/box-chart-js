@@ -14,7 +14,6 @@ function plotFiveBox(options){
     $container.resize(function(){
         clearTimeout(timeout);
         timeout = setTimeout(function(){
-            console.log(new Date());
             fiveBox.stage.width($container.width());
             fiveBox.stage.height($container.height());
 
@@ -92,10 +91,12 @@ function plotFiveBox(options){
 
             return layer;
         },
-
-        update: function(){
+        clear: function(){
+            
             this.stage.clear();
             this.stage.clearCache();
+
+            if(this._lastBounds) this.rectByValue(this._lastBounds.x, this._lastBounds.y, this._lastBounds.w, this._lastBounds.h, 'white');
             
             this.mainLayer = new Konva.Layer();
 
@@ -105,6 +106,15 @@ function plotFiveBox(options){
                 stroke: 'red'
             });
 
+            this.rectByValue(0, 0, this.options.xAxis.max, this.options.yAxis.max, 'white');
+
+            this._lastBounds = {x: this.mainRect.x(), y: this.mainRect.y(), w: this.mainRect.width(), h: this.mainRect.height()};
+        },
+        update: function(){
+            if(!this.drawCount) this.drawCount = 0;
+            console.log(this.drawCount++);
+
+            this.clear();
 
             for(var b = 0; b < options.boxes.length; b++){
                 var box = options.boxes[b];
@@ -121,6 +131,8 @@ function plotFiveBox(options){
             }
 
             this.stage.add(this.mainLayer);
+
+            this.stage.draw();
 
         }
     }
