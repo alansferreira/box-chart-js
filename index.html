@@ -2,8 +2,7 @@
     <head>
     </head>
     <body>
-        <div id="myCanvas" style="width: 100%; height: 100%">
-        </div>
+        <div id="myCanvas" style="width: 100%; height: 100%"></div>
 
         <script src="bower/jquery/dist/jquery.min.js"></script>
         <script src="bower/javascript-detect-element-resize/jquery.resize.js"></script>
@@ -69,7 +68,9 @@
                     }else{
                         selected = isCollision(data, boxData);
                     }
-                    point.fill((selected?'pink': data.fill));
+
+                    //point.fill((selected?'pink': data.fill));
+                    point.radius((selected?5: 2));
                     
                 }
                 //console.log('update');
