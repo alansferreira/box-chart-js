@@ -14,7 +14,9 @@
             var options = {
                 container: '#myCanvas', 
                 xAxis: {
-                    title: 'title X axis here',
+                    title: 'title X',
+                    showRule: true,
+                    showTitle: true,
                     rule:{
                         start: 0.0, 
                         end: 1.0,
@@ -22,7 +24,9 @@
                     }
                 }, 
                 yAxis: {
-                    title: 'title Y axis here',
+                    title: 'title Y',
+                    showRule: true,
+                    showTitle: true,
                     rule:{
                         start: 0, 
                         end: 140,
@@ -93,8 +97,8 @@
             var plot = plotFiveBox(options);
 
             function isCollision(rect1, rect2){
-                if (rect1.x >= rect2.x && rect1.x <= rect2.x + rect2.w &&
-                    rect1.y >= rect2.y && rect1.y <= rect2.y + rect2.h) {
+                if (rect1.x >= rect2.x && rect1.x <= rect2.w &&
+                    rect1.y >= rect2.y && rect1.y <= rect2.h) {
                     return true;
                 }
                 return false;

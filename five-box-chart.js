@@ -67,6 +67,14 @@ function plotFiveBox(options){
             this.mainLayer.add(point);
             return point;
         }, 
+        addText: function (data){
+            var op = Object.assign({fontSize: 12, fontFamily: 'Calibri', fill: 'black'}, data);
+
+            var text = new Konva.Text(op);
+            
+            this.mainLayer.add(text);
+            return text;
+        }, 
         /**
          * Retorna um Path de um retangulo a partir de pontos de escala
          * @param {Number} vx posicao inicial horizontal do retangulo na escala horizontal
@@ -98,20 +106,19 @@ function plotFiveBox(options){
             
             var group = new Konva.Group(rect);
             
-            if(overlaps.length>0){
-                group.clipFunc = function(ctx) {
-                    for (var ov = 0; ov < overlaps.length; ov++) {
-                        var overlap = overlaps[ov].overlapedArea;
-                        ctx.rect({
-                            x: overlap.x,
-                            y: overlap.y,
-                            width: overlap.w,
-                            height: overlap.h
-                        });
-                    }
-                };
-                
-            }
+            // if(overlaps.length>0){
+            //     group.clipFunc = function(ctx) {
+            //         for (var ov = 0; ov < overlaps.length; ov++) {
+            //             var overlap = overlaps[ov].overlapedArea;
+            //             ctx.rect({
+            //                 x: overlap.x,
+            //                 y: overlap.y,
+            //                 width: overlap.w,
+            //                 height: overlap.h
+            //             });
+            //         }
+            //     };
+            // }
             group.add(boxRect);
             this.mainLayer.add(group);
             
@@ -137,7 +144,7 @@ function plotFiveBox(options){
             this.stage.add(this.mainLayer);
 
         },
-        updateBoxes: function(){
+        drawBoxes: function(){
             
             for(var b = 0; b < options.boxes.length; b++){
                 var box = options.boxes[b];
@@ -164,50 +171,68 @@ function plotFiveBox(options){
             }
 
         },
-        update: function(){
-            this.clear();
-
-            this.updateBoxes();
-
-
-            // draw grid
-            for(var x = options.xAxis.rule.start; x < options.xAxis.rule.end; x+=options.xAxis.rule.step){
-                var line = this.addLine(x, 0, x, options.yAxis.rule.end, options.grid.stroke.x);
+        drawGrid: function(){
+            var _xAxis = this.options.xAxis;
+            var _yAxis = this.options.yAxis;
+            
+            for(var x = _xAxis.rule.start; x < _xAxis.rule.end; x+=_xAxis.rule.step){
                 
-                var ruleXText = new Konva.Text({
-                    text: Math.round(x * 100) / 100,
-                    y: this.mainRect.y() + this.mainRect.height(),
-                    fontSize: 12,
-                    fontFamily: 'Calibri',
-                    fill: 'black'
-                });
-                ruleXText.x(line.attrs.points[0] - (ruleXText.width()/2));
-                this.mainLayer.add(ruleXText);
+                var line = this.addLine(x, 0, x, _yAxis.rule.end, options.grid.stroke.x);
+
+                if(_xAxis.showRule){
+                    var ruleXText = this.addText({ text: Math.round(x * 100) / 100, y: this.mainRect.y() + this.mainRect.height()});
+                    ruleXText.x(line.attrs.points[0] - (ruleXText.width()/2));
+                    this.mainLayer.add(ruleXText);
+                }
             }
 
-            for(var y = options.yAxis.rule.start; y < options.yAxis.rule.end + options.yAxis.rule.step; y+=options.yAxis.rule.step){
-                var line = this.addLine(0, y, options.xAxis.rule.end, y, options.grid.stroke.y);
+            for(var y = _yAxis.rule.start; y < _yAxis.rule.end + _yAxis.rule.step; y+=_yAxis.rule.step){
+                var line = this.addLine(0, y, _xAxis.rule.end, y, options.grid.stroke.y);
 
-                var ruleYText = new Konva.Text({
-                    text: (options.yAxis.rule.end - options.yAxis.rule.start) - y,
-                    fontSize: 12,
-                    fontFamily: 'Calibri',
-                    fill: 'black'
-                });
-                ruleYText.x(this.mainRect.x() - (ruleYText.width() + 5));
-                ruleYText.y(line.attrs.points[1] - (ruleYText.height()/2));
-                this.mainLayer.add(ruleYText);
+                if(_yAxis.showRule){
+                    var ruleYText = this.addText({text: (_yAxis.rule.end - _yAxis.rule.start) - y});
+                    ruleYText.x(this.mainRect.x() - (ruleYText.width() + 5));
+                    ruleYText.y(line.attrs.points[1] - (ruleYText.height()/2));
+                    this.mainLayer.add(ruleYText);
+                }
             }
 
-            for(var d = 0; d < options.data.length; d++){
-                var dataItem = options.data[d];
+            if(_xAxis.showTitle){
+                var titleXText = this.addText({ text: _xAxis.title, fontSize: 20, fontStyle: 'bold', 
+                    y: this.mainRect.y() + this.mainRect.height() + (_xAxis.showRule?15:3)
+                 });
+                 titleXText.x(this.mainRect.x() + ((this.mainRect.width() / 2) -( titleXText.width() / 2 )))
+                this.mainLayer.add(titleXText);
+            }
+            if(_yAxis.showTitle){
+                var titleYText = this.addText({ text: _yAxis.title, fontSize: 20, fontStyle: 'bold'});
+                titleYText.rotate(270);
+                titleYText.x(this.mainRect.x() - (_yAxis.showRule?20:3) - (titleXText.height()));
+                titleYText.y(this.mainRect.y() + ((this.mainRect.height()/2) + (titleYText.width()/2)));
+
+                this.mainLayer.add(titleYText);
+            }
+
+        },
+        drawPoints: function(){
+            var _data = this.options.data;
+            for(var d = 0; d < _data.length; d++){
+                var dataItem = _data[d];
                 dataItem.point = null;
                 
                 var point = this.addPoint(dataItem);
                 point.data = dataItem;
                 dataItem.point = point;
-
             }
+        },
+        update: function(){
+            this.clear();
+
+            this.drawBoxes();
+
+            this.drawGrid();
+
+            this.drawPoints();
 
             this.stage.add(this.mainLayer);
 
