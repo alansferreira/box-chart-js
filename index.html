@@ -20,7 +20,15 @@
                     rule:{
                         start: 0.0, 
                         end: 1.0,
-                        step: 0.1
+                        step: 0.1,
+                        groupsHeight: 20,
+                        groups: [
+                            {x: 0, w: 0.45, text: '', fill: 'red', stroke: 'black'}, 
+                            {x: 0.45, w: 0.65, text: '', fill: 'pink', stroke: 'black'}, 
+                            {x: 0.65, w: 0.79, text: '', fill: 'lightgrey', stroke: 'black'}, 
+                            {x: 0.79, w: 0.9, text: '', fill: 'lightgreen', stroke: 'black'}, 
+                            {x: 0.9, w: 1, text: '', fill: 'green', stroke: 'black'}, 
+                        ]
                     }
                 }, 
                 yAxis: {
@@ -30,15 +38,23 @@
                     rule:{
                         start: 0, 
                         end: 140,
-                        step: 10
+                        step: 10, 
+                        groupsWidth: 20,
+                        groups: [
+                            {y: 0, h: 65, text: '', fill: 'red', stroke: 'black'}, 
+                            {y: 65, h: 90, text: '', fill: 'pink', stroke: 'black'}, 
+                            {y: 90, h: 110, text: '', fill: 'lightgrey', stroke: 'black'}, 
+                            {y: 110, h: 125, text: '', fill: 'lightgreen', stroke: 'black'}, 
+                            {y: 125, h: 140, text: '', fill: 'green', stroke: 'black'}, 
+                        ]
                     }
                 }, 
                 data: [
                     {id: 0, x: 1, y: 1, title: null}
                 ],
                 boxes: [
-                    {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', title: 'E', events:{mouseenter: showInside}}, 
-                    {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', title: 'D', events:{mouseenter: showInside}}, 
+                    {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', title: 'Items for ranking E\nblablabla\nblablabla\nblablabla\nblablabla\nblablabla', events:{mouseenter: showInside}}, 
+                    {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', title: 'Items for ranking D', events:{mouseenter: showInside}}, 
                     {x: 0, y: 90, w: 0.6, h: 140, fill: '#F2F2F2', title: 'C', events:{mouseenter: showInside}}, 
                     {x: 0.6, y: 90, w: 1, h: 140, fill: '#7F7FFF', title: 'B', events:{mouseenter: showInside}}, 
                     {x: 0.9, y: 130, w: 1, h: 140, fill: '#7FBF7F', title: 'A', events:{mouseenter: showInside}}, 
