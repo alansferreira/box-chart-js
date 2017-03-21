@@ -38,6 +38,16 @@ function plotFiveBox(options){
                     y: this.posByVal(this.mainRect.height(), (options.yAxis.rule.end - options.yAxis.rule.start), y)
             };
         }, 
+        addRawLine: function (x1, y1, x2, y2, stroke, strokeWidth){
+            var line = new Konva.Line({
+                points: [x1, y1, x2, y2], 
+                stroke: stroke ? stroke : 'red', 
+                strokeWidth: strokeWidth ? strokeWidth : 1, 
+            });
+            
+            this.mainLayer.add(line);
+            return line;
+        }, 
         addLine: function (x1, y1, x2, y2, stroke, strokeWidth){
             var p1 = this.pixelPointByVal(x1, y1);
             var p2 = this.pixelPointByVal(x2, y2);
@@ -175,6 +185,64 @@ function plotFiveBox(options){
             var _xAxis = this.options.xAxis;
             var _yAxis = this.options.yAxis;
             
+            // DRAW SUB rules
+            for(var y = 0; y < _yAxis.rule.groups.length; y++){
+                var box = _yAxis.rule.groups[y];
+                var rangePoint = this.pixelPointByVal(rangeX, rangeY);
+                
+                var p = this.pixelPointByVal(0, box.y);
+                var s = this.pixelPointByVal(0, box.h);
+
+                var boxRect = new Konva.Rect({
+                        x: this.mainRect.x() - 90, 
+                        y:  this.mainRect.y() + ((rangePoint.y - s.y)),
+                        width: 50, 
+                        height: (s.y - p.y)
+                });
+                
+                boxRect.data = box;
+                boxRect.fill(box.fill ? box.fill : 'grey');
+                boxRect.stroke(box.stroke ? box.stroke : null);
+                boxRect.strokeWidth(box.strokeWidth ? box.strokeWidth : 0.2);
+                
+                this.mainLayer.add(boxRect);
+
+                var boxText = this.addText({text: box.text, align: 'center', padding: 3});
+                boxText.width(boxRect.width());
+                boxText.x(boxRect.x());
+                boxText.y(boxRect.y() + ((boxRect.height()/2) - ((boxText.height()/2))));
+
+            }
+
+            for(var x = 0; x < _xAxis.rule.groups.length; x++){
+                var box = _xAxis.rule.groups[x];
+                var rangePoint = this.pixelPointByVal(rangeX, rangeY);
+                
+                var p = this.pixelPointByVal(box.x, 0);
+                var s = this.pixelPointByVal(box.w, 0);
+
+                var boxRect = new Konva.Rect({
+                        x: this.mainRect.x() + p.x,
+                        y: this.mainRect.y() + this.mainRect.height() + 30, 
+                        width: (s.x - p.x),
+                        height: 50
+                });
+                
+                boxRect.data = box;
+                boxRect.fill(box.fill ? box.fill : 'grey');
+                boxRect.stroke(box.stroke ? box.stroke : null);
+                boxRect.strokeWidth(box.strokeWidth ? box.strokeWidth : 0.2);
+
+                this.mainLayer.add(boxRect);
+
+                var boxText = this.addText({text: box.text, align: 'center', padding: 3});
+                boxText.width(boxRect.width());
+                boxText.x(boxRect.x());
+                boxText.y(boxRect.y() + ((boxRect.height()/2) - ((boxText.height()/2))));
+
+            }
+
+            //DRAW RULES
             for(var x = _xAxis.rule.start; x < _xAxis.rule.end; x+=_xAxis.rule.step){
                 
                 var line = this.addLine(x, 0, x, _yAxis.rule.end, options.grid.stroke.x);
@@ -197,69 +265,10 @@ function plotFiveBox(options){
                 }
 
             }
-            
-            for(var y = 0; y < _yAxis.rule.groups.length; y++){
-                var box = _yAxis.rule.groups[y];
-                var rangePoint = this.pixelPointByVal(rangeX, rangeY);
-                
-                var p = this.pixelPointByVal(0, box.y);
-                var s = this.pixelPointByVal(0, box.h);
-
-                var boxRect = new Konva.Rect({
-                        x: this.mainRect.x() - 100, 
-                        y:  this.mainRect.y() + ((rangePoint.y - s.y)),
-                        width: 50, 
-                        height: (s.y - p.y)
-                });
-                
-                boxRect.data = box;
-                boxRect.fill(box.fill ? box.fill : 'grey');
-                boxRect.stroke(box.stroke ? box.stroke : null);
-                boxRect.strokeWidth(box.strokeWidth ? box.strokeWidth : null);
-                this.mainLayer.add(boxRect);
-
-                // if(_yAxis.showRule){
-                //     var ruleYText = this.addText({text: (_yAxis.rule.end - _yAxis.rule.start) - y});
-                //     ruleYText.x(this.mainRect.x() - (ruleYText.width() + 5));
-                //     ruleYText.y(line.attrs.points[1] - (ruleYText.height()/2));
-                //     this.mainLayer.add(ruleYText);
-                // }
-
-            }
-
-            for(var x = 0; x < _xAxis.rule.groups.length; x++){
-                var box = _xAxis.rule.groups[x];
-                var rangePoint = this.pixelPointByVal(rangeX, rangeY);
-                
-                var p = this.pixelPointByVal(box.x, 0);
-                var s = this.pixelPointByVal(box.w, 0);
-
-                var boxRect = new Konva.Rect({
-                        x: this.mainRect.x() + p.x,
-                        y: this.mainRect.y() + this.mainRect.height() + 50, 
-                        width: (s.x - p.x),
-                        height: 50
-                });
-                
-                boxRect.data = box;
-                boxRect.fill(box.fill ? box.fill : 'grey');
-                boxRect.stroke(box.stroke ? box.stroke : null);
-                boxRect.strokeWidth(box.strokeWidth ? box.strokeWidth : null);
-                this.mainLayer.add(boxRect);
-
-                // if(_yAxis.showRule){
-                //     var ruleYText = this.addText({text: (_yAxis.rule.end - _yAxis.rule.start) - y});
-                //     ruleYText.x(this.mainRect.x() - (ruleYText.width() + 5));
-                //     ruleYText.y(line.attrs.points[1] - (ruleYText.height()/2));
-                //     this.mainLayer.add(ruleYText);
-                // }
-
-            }
-
 
             if(_xAxis.showTitle){
                 var titleXText = this.addText({ text: _xAxis.title, fontSize: 20, fontStyle: 'bold', 
-                    y: this.mainRect.y() + this.mainRect.height() + (_xAxis.showRule?15:3)
+                    y: this.mainRect.y() + this.mainRect.height() + (_xAxis.showRule?10:3)
                  });
                  titleXText.x(this.mainRect.x() + ((this.mainRect.width() / 2) -( titleXText.width() / 2 )))
                 this.mainLayer.add(titleXText);

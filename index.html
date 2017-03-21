@@ -23,11 +23,11 @@
                         step: 0.1,
                         groupsHeight: 20,
                         groups: [
-                            {x: 0, w: 0.45, text: '', fill: 'red', stroke: 'black'}, 
-                            {x: 0.45, w: 0.65, text: '', fill: 'pink', stroke: 'black'}, 
-                            {x: 0.65, w: 0.79, text: '', fill: 'lightgrey', stroke: 'black'}, 
-                            {x: 0.79, w: 0.9, text: '', fill: 'lightgreen', stroke: 'black'}, 
-                            {x: 0.9, w: 1, text: '', fill: 'green', stroke: 'black'}, 
+                            {x: 0, w: 0.45, text: 'x1\naasdfasdfasdfasdfasdf asdf asdf asdf asdf f ', fill: 'red', stroke: 'black'}, 
+                            {x: 0.45, w: 0.65, text: 'x2', fill: 'pink', stroke: 'black'}, 
+                            {x: 0.65, w: 0.79, text: 'x3', fill: 'lightgrey', stroke: 'black'}, 
+                            {x: 0.79, w: 0.9, text: 'x4', fill: 'lightgreen', stroke: 'black'}, 
+                            {x: 0.9, w: 1, text: 'x5', fill: 'green', stroke: 'black'}, 
                         ]
                     }
                 }, 
@@ -41,11 +41,11 @@
                         step: 10, 
                         groupsWidth: 20,
                         groups: [
-                            {y: 0, h: 65, text: '', fill: 'red', stroke: 'black'}, 
-                            {y: 65, h: 90, text: '', fill: 'pink', stroke: 'black'}, 
-                            {y: 90, h: 110, text: '', fill: 'lightgrey', stroke: 'black'}, 
-                            {y: 110, h: 125, text: '', fill: 'lightgreen', stroke: 'black'}, 
-                            {y: 125, h: 140, text: '', fill: 'green', stroke: 'black'}, 
+                            {y: 0, h: 65, text: 'y1\nfasdfasdfasdf\nsafsdsfgsdfgsdfgsdfgsdfgsdfgsdfdfds', fill: 'red', stroke: 'black'}, 
+                            {y: 65, h: 90, text: 'y2', fill: 'pink', stroke: 'black'}, 
+                            {y: 90, h: 110, text: 'y3', fill: 'lightgrey', stroke: 'black'}, 
+                            {y: 110, h: 125, text: 'y4', fill: 'lightgreen', stroke: 'black'}, 
+                            {y: 125, h: 140, text: 'y5', fill: 'green', stroke: 'black'}, 
                         ]
                     }
                 }, 
@@ -98,7 +98,7 @@
             }
             function randomData(){
                 var data = [];
-                var length = Math.floor(Math.random() * 2000);
+                var length = Math.floor(Math.random() * 500);
                 for(var i = 0; i < length; i++){
                     data.push({ 
                         x: Math.floor(Math.random() * 1000)/1000, 
