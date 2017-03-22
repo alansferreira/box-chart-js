@@ -36,7 +36,7 @@ var plot = plotFiveBox(options);
     var options = {
         container: '#myCanvas', 
         xAxis: {
-            title: 'title X axis here',
+            text: 'text X axis here',
             rule:{
                 start: 0.0, 
                 end: 1.0,
@@ -44,7 +44,7 @@ var plot = plotFiveBox(options);
             }
         }, 
         yAxis: {
-            title: 'title Y axis here',
+            text: 'text Y axis here',
             rule:{
                 start: 0, 
                 end: 140,
@@ -52,14 +52,14 @@ var plot = plotFiveBox(options);
             }
         }, 
         data: [
-            {id: 0, x: 1, y: 1, title: null}
+            {id: 0, x: 1, y: 1, text: null}
         ],
         boxes: [
-            {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', title: 'E', events:{mouseenter: showInside}}, 
-            {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', title: 'D', events:{mouseenter: showInside}}, 
-            {x: 0, y: 90, w: 0.6, h: 140, fill: '#F2F2F2', title: 'C', events:{mouseenter: showInside}}, 
-            {x: 0.6, y: 90, w: 1, h: 140, fill: '#7F7FFF', title: 'B', events:{mouseenter: showInside}}, 
-            {x: 0.9, y: 130, w: 1, h: 140, fill: '#7FBF7F', title: 'A', events:{mouseenter: showInside}}, 
+            {x: 0, y: 0, w: 0.6, h: 90, fill: '#FFFF7F', text: 'E', events:{mouseenter: showInside}}, 
+            {x: 0.6, y: 0, w: 1, h: 90, fill: '#FF7F7F', text: 'D', events:{mouseenter: showInside}}, 
+            {x: 0, y: 90, w: 0.6, h: 140, fill: '#F2F2F2', text: 'C', events:{mouseenter: showInside}}, 
+            {x: 0.6, y: 90, w: 1, h: 140, fill: '#7F7FFF', text: 'B', events:{mouseenter: showInside}}, 
+            {x: 0.9, y: 130, w: 1, h: 140, fill: '#7FBF7F', text: 'A', events:{mouseenter: showInside}}, 
             //{x: 0, y: 0, w: 0.4, h: 60, fill: 'grey'}, 
             //{x: 0.5, y: 0, w: 0.9, h: 60, fill: 'blue'}, 
         ], 
@@ -71,7 +71,7 @@ var plot = plotFiveBox(options);
     var _lastMouseBox = null;
     function showInside(evt){
 
-        //alert(evt.currentTarget.data.title);
+        //alert(evt.currentTarget.data.text);
         var boxData = evt.currentTarget.data;
         if(_lastMouseBox==boxData) return;
         _lastMouseBox=boxData;
@@ -85,7 +85,7 @@ var plot = plotFiveBox(options);
             data.w = 1;
 
             var selected = false;
-            if(boxData.title=='B'){
+            if(boxData.text=='B'){
                 var boxA = plot.options.boxes[4];
                 selected = isCollision(data, boxData) && !isCollision(data, boxA);
             }else{

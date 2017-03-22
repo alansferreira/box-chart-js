@@ -168,16 +168,16 @@ function plotFiveBox(options){
                     }
                 }
 
-                var title = new Konva.Text({
-                    text: box.title,
+                var text = new Konva.Text({
+                    text: box.text,
                     fontSize: 30,
                     fontFamily: 'Calibri',
-                    fill: 'green'
+                    fill: box.textFill
                 });
 
-                title.x(rect.x()+((rect.width()/2)-(title.textWidth/2)));
-                title.y(rect.y()+((rect.height()/2)-(title.textHeight/2)));
-                this.mainLayer.add(title);
+                text.x(rect.x()+((rect.width()/2)-(text.textWidth/2)));
+                text.y(rect.y()+((rect.height()/2)-(text.textHeight/2)));
+                this.mainLayer.add(text);
             }
 
         },
@@ -207,7 +207,7 @@ function plotFiveBox(options){
                 
                 this.mainLayer.add(boxRect);
 
-                var boxText = this.addText({text: box.text, align: 'center', padding: 3});
+                var boxText = this.addText({text: box.text, align: 'center', padding: 3, fill: box.textFill});
                 boxText.width(boxRect.width());
                 boxText.x(boxRect.x());
                 boxText.y(boxRect.y() + ((boxRect.height()/2) - ((boxText.height()/2))));
@@ -235,7 +235,7 @@ function plotFiveBox(options){
 
                 this.mainLayer.add(boxRect);
 
-                var boxText = this.addText({text: box.text, align: 'center', padding: 3});
+                var boxText = this.addText({text: box.text, align: 'center', padding: 3, fill: box.textFill});
                 boxText.width(boxRect.width());
                 boxText.x(boxRect.x());
                 boxText.y(boxRect.y() + ((boxRect.height()/2) - ((boxText.height()/2))));
@@ -266,20 +266,20 @@ function plotFiveBox(options){
 
             }
 
-            if(_xAxis.showTitle){
-                var titleXText = this.addText({ text: _xAxis.title, fontSize: 20, fontStyle: 'bold', 
+            if(_xAxis.showtext){
+                var textXText = this.addText({ text: _xAxis.text, fontSize: 20, fontStyle: 'bold', 
                     y: this.mainRect.y() + this.mainRect.height() + (_xAxis.showRule?10:3)
                  });
-                 titleXText.x(this.mainRect.x() + ((this.mainRect.width() / 2) -( titleXText.width() / 2 )))
-                this.mainLayer.add(titleXText);
+                 textXText.x(this.mainRect.x() + ((this.mainRect.width() / 2) -( textXText.width() / 2 )))
+                this.mainLayer.add(textXText);
             }
-            if(_yAxis.showTitle){
-                var titleYText = this.addText({ text: _yAxis.title, fontSize: 20, fontStyle: 'bold'});
-                titleYText.rotate(270);
-                titleYText.x(this.mainRect.x() - (_yAxis.showRule?20:3) - (titleXText.height()));
-                titleYText.y(this.mainRect.y() + ((this.mainRect.height()/2) + (titleYText.width()/2)));
+            if(_yAxis.showtext){
+                var textYText = this.addText({ text: _yAxis.text, fontSize: 20, fontStyle: 'bold'});
+                textYText.rotate(270);
+                textYText.x(this.mainRect.x() - (_yAxis.showRule?20:3) - (textXText.height()));
+                textYText.y(this.mainRect.y() + ((this.mainRect.height()/2) + (textYText.width()/2)));
 
-                this.mainLayer.add(titleYText);
+                this.mainLayer.add(textYText);
             }
 
         },
