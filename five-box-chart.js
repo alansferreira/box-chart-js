@@ -147,7 +147,7 @@ function plotFiveBox(options){
             this.mainLayer = new Konva.Layer();
 
             this.mainRect = new Konva.Rect({
-                x: 140, y: 10, width: $container.width() - 200, height: $container.height() - 140, 
+                x: 140, y: 20, width: $container.width() - 200, height: $container.height() - 140, 
                 fill: 'grey', 
                 stroke: 'red'
             });
@@ -267,17 +267,16 @@ function plotFiveBox(options){
             }
 
             if(_xAxis.showText){
-                var textXText = this.addText({ text: _xAxis.text, fontSize: 20, fontStyle: 'bold', 
+                var textXText = this.addText({ text: _xAxis.text, fontSize: 18, 
                     y: this.mainRect.y() + this.mainRect.height() + (_xAxis.showRule?10:3)
                  });
-                 textXText.x(this.mainRect.x() + ((this.mainRect.width() / 2) -( textXText.width() / 2 )))
+                 textXText.x(this.mainRect.x() + this.mainRect.width() - textXText.width())
                 this.mainLayer.add(textXText);
             }
             if(_yAxis.showText){
-                var textYText = this.addText({ text: _yAxis.text, fontSize: 20, fontStyle: 'bold'});
-                textYText.rotate(270);
-                textYText.x(this.mainRect.x() - (_yAxis.showRule?20:3) - (textXText.height()));
-                textYText.y(this.mainRect.y() + ((this.mainRect.height()/2) + (textYText.width()/2)));
+                var textYText = this.addText({ text: _yAxis.text, fontSize: 18});
+                textYText.x(this.mainRect.x() - ((_yAxis.showRule?30:3) + (textYText.textWidth)));
+                textYText.y(this.mainRect.y() - textYText.height());
 
                 this.mainLayer.add(textYText);
             }
