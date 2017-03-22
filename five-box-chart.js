@@ -315,8 +315,8 @@ function plotFiveBox(options){
 
 
     $container.resize(function(){
-        fiveBox.stage.width($container.width());
-        fiveBox.stage.height($container.height());
+        fiveBox.stage.width($container.parent().width());
+        fiveBox.stage.height($container.parent().height());
 
         fiveBox.update();
     });
