@@ -266,14 +266,14 @@ function plotFiveBox(options){
 
             }
 
-            if(_xAxis.showtext){
+            if(_xAxis.showText){
                 var textXText = this.addText({ text: _xAxis.text, fontSize: 20, fontStyle: 'bold', 
                     y: this.mainRect.y() + this.mainRect.height() + (_xAxis.showRule?10:3)
                  });
                  textXText.x(this.mainRect.x() + ((this.mainRect.width() / 2) -( textXText.width() / 2 )))
                 this.mainLayer.add(textXText);
             }
-            if(_yAxis.showtext){
+            if(_yAxis.showText){
                 var textYText = this.addText({ text: _yAxis.text, fontSize: 20, fontStyle: 'bold'});
                 textYText.rotate(270);
                 textYText.x(this.mainRect.x() - (_yAxis.showRule?20:3) - (textXText.height()));
